@@ -21,11 +21,11 @@ export class Steam {
 
     const appItems = await page.$$eval('.item_def_grid_item', (pageItems) =>
       pageItems.map((x) => ({
-        title: x.querySelector('.item_def_name')?.textContent?.trim(),
+        title: x.querySelector('.item_def_name').textContent.trim(),
         price: parseFloat(
-          x.querySelector('.item_def_price')?.textContent?.trim().replace(',', '.') || ''
+          x.querySelector('.item_def_price').textContent.trim().replace(',', '.') || ''
         ),
-        image: x.querySelector('.item_def_icon')?.getAttribute('src'),
+        image: x.querySelector('.item_def_icon').getAttribute('src'),
       }))
     )
 
