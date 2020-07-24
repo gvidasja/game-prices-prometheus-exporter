@@ -1,0 +1,4 @@
+targets:
+  - type: steam_items
+    id: '365960'
+    name: rfactor2 items
