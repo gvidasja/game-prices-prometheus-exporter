@@ -20,10 +20,7 @@ async function main() {
   setInterval(updateMetrics, parseInt(INTERVAL_MINUTES) * 60 * 1000)
 
   express()
-    .get('/metrics', async (req, res) => {
-      console.log('metrics')
-      res.send(await registry.metrics())
-    })
+    .get('/metrics', async (req, res) => res.send(await registry.metrics()))
     .listen(parseInt(PORT), () => console.log(`Listening on ${PORT}`))
 
   const priceGauge = new prom.Gauge({
