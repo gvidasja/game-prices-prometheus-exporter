@@ -1,41 +1,51 @@
 import express from 'express'
 import puppeteer from 'puppeteer'
-import { Steam } from './steam'
+import { Steam } from './scrapers/Steam'
 import prom from 'prom-client'
+import { loadConfig } from './config'
+import { repeat } from './util'
+import { CombinedScraper } from './scrapers/CombinedScraper'
+import { Sellfy } from './scrapers/Sellfy'
 
-const { PORT = '3000', INTERVAL_MINUTES = '1', PUPPETEER_NO_SANDBOX = 'false' } = process.env
+const {
+  PORT = '3000',
+  INTERVAL_MINUTES = '1',
+  PUPPETEER_NO_SANDBOX = 'false',
+  CONFIG_PATH = 'config.yml',
+} = process.env
 
 main()
 
 async function main() {
   const registry = new prom.Registry()
 
-  const steam = new Steam(
-    await puppeteer.launch({
-      args: PUPPETEER_NO_SANDBOX === 'true' ? ['--no-sandbox'] : [],
-    })
-  )
+  const config = loadConfig(CONFIG_PATH)
 
-  updateMetrics()
-  setInterval(updateMetrics, parseInt(INTERVAL_MINUTES) * 60 * 1000)
-
-  express()
-    .get('/metrics', async (req, res) => {
-      console.log('metrics')
-      res.send(await registry.metrics())
-    })
-    .listen(parseInt(PORT), () => console.log(`Listening on ${PORT}`))
+  const browser = await puppeteer.launch({
+    args: PUPPETEER_NO_SANDBOX === 'true' ? ['--no-sandbox'] : [],
+  })
 
   const priceGauge = new prom.Gauge({
     name: 'price',
     help: 'price of item',
-    labelNames: ['item', 'type'],
+    labelNames: ['item', 'type', 'name'],
     registers: [registry],
   })
 
-  async function updateMetrics() {
-    const rfactor2Items = await steam.getGameItems(365960)
+  const scraper = new CombinedScraper(config, {
+    sellfy: new Sellfy(browser),
+    steam_items: new Steam(browser),
+  })
 
-    rfactor2Items.forEach((item) => priceGauge.labels(item.title, 'rfactor2-dlc').set(item.price))
-  }
+  repeat(parseInt(INTERVAL_MINUTES) * 60, async () => {
+    const items = await scraper.getItems()
+
+    items.forEach(({ item, target }) =>
+      priceGauge.set({ item: item.title, name: target.name, type: target.type }, item.price)
+    )
+  })
+
+  express()
+    .get('/metrics', async (req, res) => res.send(await registry.metrics()))
+    .listen(parseInt(PORT), () => console.log(`Listening on ${PORT}`))
 }

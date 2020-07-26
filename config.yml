@@ -1,0 +1,13 @@
+targets:
+  - type: steam_items
+    id: "365960"
+    name: rf2 items
+  - type: sellfy
+    id: unitedracingdesign
+    name: urd
+  - type: sellfy
+    id: racesimstudio/assettocorsa
+    name: rss
+  - type: sellfy
+    id: racesimstudio/bundles
+    name: rss
