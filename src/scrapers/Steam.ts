@@ -1,22 +1,8 @@
 import puppeteer from 'puppeteer'
 import axios from 'axios'
 import qs from 'querystring'
-import { PriceScraper, PriceRecord } from './scraper'
-
-export abstract class HtmlScraperBase {
-  constructor(private browser: puppeteer.Browser) {}
-
-  protected async scrape(
-    html: string,
-    scraper: (page: puppeteer.Page) => PriceRecord[] | Promise<PriceRecord[]>
-  ) {
-    const page = await this.browser.newPage()
-    await page.setContent(html)
-    const result = await scraper(page)
-    await page.close()
-    return result
-  }
-}
+import { PriceScraper, PriceRecord } from './PriceSraper'
+import { HtmlScraperBase } from './HtmlScraperBase'
 
 export class Steam extends HtmlScraperBase implements PriceScraper {
   constructor(browser: puppeteer.Browser) {
