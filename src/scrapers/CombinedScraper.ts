@@ -11,7 +11,7 @@ export class CombinedScraper {
   async getItems(): Promise<{ item: PriceRecord; target: ScrapeTarget }[]> {
     const items = await Promise.all(
       this.scrapers.map(async ([scraper, target]) => {
-        const items = await scraper.getItems(target.id)
+        const items = (await scraper.getItems(target.id)).filter((x) => x.price)
 
         return items.map((item) => ({ item, target }))
       })
