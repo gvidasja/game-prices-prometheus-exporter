@@ -23,8 +23,8 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
   PUPPETEER_NO_SANDBOX=true
 
 COPY package.json yarn.lock
-RUN yarn --frozen-lockfile
-COPY --from=BUILD /app/dist /dist
+RUN yarn --frozen-lockfile --production
+COPY --from=BUILD /app/dist dist
 
 EXPOSE 3000
 
