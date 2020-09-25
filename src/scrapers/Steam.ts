@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer'
-import axios from 'axios'
 import qs from 'querystring'
 import { PriceScraper, PriceRecord } from './PriceSraper'
 import { HtmlScraperBase } from './HtmlScraperBase'
+import * as http from '../infra/http'
 
 export class Steam extends HtmlScraperBase implements PriceScraper {
   constructor(browser: puppeteer.Browser) {
@@ -10,14 +10,14 @@ export class Steam extends HtmlScraperBase implements PriceScraper {
   }
 
   async getItems(appId: string): Promise<PriceRecord[]> {
-    const {
-      data: { results_html: html },
-    } = await axios.get(
+    const { body } = await http.get(
       `https://store.steampowered.com/itemstore/${appId}/ajaxgetitemdefs/render/?${qs.encode({
         filter: 'All',
         count: 1000,
       })}`
     )
+
+    const html = JSON.parse(body).results_html
 
     return super.scrape(html, (page) =>
       page.$$eval(

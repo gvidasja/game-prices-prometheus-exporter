@@ -1,7 +1,7 @@
-import puppeteer, { Browser } from 'puppeteer'
+import { Browser } from 'puppeteer'
 import { HtmlScraperBase } from './HtmlScraperBase'
 import { PriceRecord, PriceScraper } from './PriceSraper'
-import axios from 'axios'
+import * as http from '../infra/http'
 
 export class Sellfy extends HtmlScraperBase implements PriceScraper {
   constructor(browser: Browser) {
@@ -9,7 +9,7 @@ export class Sellfy extends HtmlScraperBase implements PriceScraper {
   }
 
   async getItems(appId: string): Promise<PriceRecord[]> {
-    const { data: html } = await axios.get(`https://sellfy.com/${appId}`)
+    const { body: html } = await http.get(`https://sellfy.com/${appId}`)
 
     return super.scrape(html, (page) =>
       page.$$eval(
