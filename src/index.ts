@@ -9,7 +9,7 @@ import { Sellfy } from './scrapers/Sellfy'
 
 const {
   PORT = '3000',
-  INTERVAL_MINUTES = '1',
+  INTERVAL_SECONDS = '10',
   PUPPETEER_NO_SANDBOX = 'false',
   CONFIG_PATH = 'config.yml',
 } = process.env
@@ -37,7 +37,7 @@ async function main() {
     steam_items: new Steam(browser),
   })
 
-  repeat(parseInt(INTERVAL_MINUTES) * 60, async () => {
+  repeat(parseInt(INTERVAL_SECONDS), async () => {
     const items = await scraper.getItems()
 
     items.forEach(({ item, target }) =>
