@@ -8,5 +8,20 @@
 ```bash
 docker-compose up
 ```
-1. Go to http://localhost:3001 -> Prices dashboard to see prices
-1. Go to http://localhost:3000/metrics to see Prometheus metrics for prices
+1. Go to http://localhost:3001 - Prices dashboard to see prices
+1. Go to http://localhost:3000/metrics - to see Prometheus metrics for prices
+
+## Deployment
+
+Simplest way is to run [gvidelio/game-prices-prometheus-exporter](https://hub.docker.com/repository/docker/gvidelio/game-prices-prometheus-exporter) image with docker:
+
+```sh
+docker run \
+  -v $PWD/config.yml:/etc/game-prices-prometheus-exporter/config.yml \
+  -p 3000:3000 \
+  -e INTERVAL_SECONDS=60 \
+  -e NODE_ENV: production \
+  gvidelio/game-prices-prometheus-exporter
+```
+
+Prices will become available as Prometheus metrics via http://localhost:3000/metrics.
