@@ -1,0 +1,12 @@
+# Game Prices exporter
+
+## Local development
+
+1. Linux recommended
+1. Install `docker` and `docker-compose`
+1. Run:
+```bash
+docker-compose up
+```
+1. Go to http://localhost:3001 -> Prices dashboard to see prices
+1. Go to http://localhost:3000/metrics to see Prometheus metrics for prices
