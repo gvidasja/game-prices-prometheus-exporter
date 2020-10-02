@@ -35,5 +35,6 @@ services:
     ports:
       - 3001:3000
     volumes:
-      - ./grafana.yml:/etc/grafana/provisioning/automatic.yml
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
     restart: always

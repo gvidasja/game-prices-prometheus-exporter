@@ -1,0 +1,124 @@
+{
+  "editable": true,
+  "id": 1,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fill": 0,
+      "gridPos": {
+        "h": 19,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "current": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "renderer": "flot",
+      "spaceLength": 10,
+      "targets": [
+        {
+          "expr": "sum by (type, name, item) (price{type=~\"$type\", name=~\"$name\", item=~\"$item\"})",
+          "interval": "",
+          "legendFormat": "[{{type}}] [{{name}}] {{item}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Prices",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 22,
+  "style": "dark",
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(price{}, type)",
+        "includeAll": true,
+        "index": -1,
+        "label": "Shop Type",
+        "multi": true,
+        "name": "type",
+        "query": "label_values(price{}, type)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(price{}, name)",
+        "includeAll": true,
+        "index": -1,
+        "label": "Shop name",
+        "multi": true,
+        "name": "name",
+        "query": "label_values(price{}, name)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(price{}, item)",
+        "includeAll": true,
+        "index": -1,
+        "label": "Item",
+        "multi": true,
+        "name": "item",
+        "query": "label_values(price{}, item)",
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "title": "Prices",
+  "version": 2
+}
