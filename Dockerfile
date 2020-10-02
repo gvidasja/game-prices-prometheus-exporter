@@ -19,7 +19,9 @@ RUN apk add --no-cache \
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
   PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
-  PUPPETEER_NO_SANDBOX=true
+  PUPPETEER_NO_SANDBOX=true \
+  CONFIG_PATH=/etc/game-prices-prometheus-exporter/config.yml \
+  NODE_ENV=production
 
 COPY package.json yarn.lock ./
 RUN yarn --production

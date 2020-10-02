@@ -6,13 +6,12 @@ services:
       dockerfile: dev.Dockerfile
     environment:
       INTERVAL_SECONDS: 10
-      CONFIG_PATH: /app/config.yml
     ports:
       - 3000:3000
     volumes:
       - ./src:/app/src
       - ./tsconfig.json:/app/tsconfig.json
-      - ./config.yml:/app/config.yml
+      - ./config.yml:/etc/game-prices-prometheus-exporter/config.yml
       - /app/node_modules
     command:
       - yarn
