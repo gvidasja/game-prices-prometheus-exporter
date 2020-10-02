@@ -22,17 +22,17 @@ export class Steam extends HtmlScraperBase implements PriceScraper {
     return super.scrape(html, (page) =>
       page.$$eval(
         '.item_def_grid_item',
-        (pageItems) => <PriceRecord[]>pageItems.map((x) => {
-            const $title = x.querySelector('.item_def_name')
-            const $price = x.querySelector('.item_def_price')
-            const $image = x.querySelector('.item_def_icon')
+        (pageItems) => pageItems.map((x) => {
+          const $title = x.querySelector('.item_def_name')
+          const $price = x.querySelector('.item_def_price')
+          const $image = x.querySelector('.item_def_icon')
 
-            return {
-              title: $title && $title.textContent.trim(),
-              price: $price && parseFloat($price.textContent.trim().replace(',', '.') || ''),
-              image: $image && $image.getAttribute('src'),
-            }
-          })
+          return {
+            title: $title && $title.textContent.trim(),
+            price: $price && parseFloat($price.textContent.trim().replace(',', '.') || ''),
+            image: $image && $image.getAttribute('src'),
+          }
+        })
       )
     )
   }
