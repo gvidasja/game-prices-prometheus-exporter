@@ -31,7 +31,7 @@ func main() {
 	go func() {
 		for {
 			result := <-results
-			logger.LogMetrics(result.Target.Type, result.Target.ID, result.ItemName, result.ItemPrice)
+			logger.LogMetrics(result.Target.Type, result.Target.Name, result.ItemName, result.ItemPrice)
 		}
 	}()
 
