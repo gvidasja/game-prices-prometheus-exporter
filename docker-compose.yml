@@ -1,21 +1,13 @@
-version: '3.7'
+version: "3.7"
 services:
   app:
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
+    build: .
     environment:
       INTERVAL_SECONDS: 10
     ports:
       - 3000:3000
     volumes:
-      - ./src:/app/src
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./config.yml:/etc/game-prices-prometheus-exporter/config.yml
-      - /app/node_modules
-    command:
-      - yarn
-      - start
+      - ./config.yml:/app/config.yml
   prom:
     image: prom/prometheus
     volumes:
@@ -26,11 +18,11 @@ services:
   grafana:
     image: grafana/grafana
     environment:
-      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
-      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
       GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
       GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
-      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_USERS_ALLOW_SIGN_UP: "false"
     ports:
       - 3001:3000
     volumes:
